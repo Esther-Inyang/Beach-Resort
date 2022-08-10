@@ -14,12 +14,16 @@ function Navbar() {
     <nav className='navbar'>
         <div className='nav-center'>
             <div className='nav-header'>
-                {/*<Link to="/">
+                <Link to="/">
                     <img src={logo} alt="Beach Resort"/>
-                </Link> */}
+                </Link>
                 
-                <img src={logo} alt="Beach Resort" />
+               <button type="button" className="nav-btn" onClick={handleToggle}><FaAlignRight className='nav-icon' /></button>
             </div>
+            <ul className={isOpen ? "nav-links show-nav" : "nav-links"}>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/rooms">Rooms</Link></li>
+            </ul>
         </div>
     </nav>
   )
