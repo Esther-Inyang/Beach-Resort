@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Hero from '../components/Hero'
 import Banner from "../components/Banner";
 import { Link } from 'react-router-dom'
 import Services from "../components/Services";
+import FeaturedRooms from "../components/FeaturedRooms";
+import Focus from "../components/Focus";
 
 function Home(){
     return (
@@ -16,6 +18,10 @@ function Home(){
             </Hero>
 
             <Services />
+            <FeaturedRooms />
+
+            {/* To focus at The Bottom as page renders */}
+            <Focus />
         </>
     )
 }

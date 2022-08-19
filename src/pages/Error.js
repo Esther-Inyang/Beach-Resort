@@ -15,6 +15,7 @@ export default function Error() {
           
         </Banner>
       </Hero>
+    
     </div>
   )
 }
