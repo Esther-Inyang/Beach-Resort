@@ -24,24 +24,25 @@ const RoomProvider = (props) =>{
         let tempItems = data.map(item =>{
             let id = item.sys.id;
             let images = item.fields.images.map(image => image.fields.file.url);
-            
-            let room = {...item.fields,images, id };
 
+            let room = {...item.fields,images, id };
             return room;
         });
-
         return tempItems;
     }
 
+    const getRoom = (slug) =>{
+        let tempRooms = [...rooms];
+        const theRoom = tempRooms.find((room) => room.slug === slug);
+        return theRoom;
+    };
+
     return (
-        <RoomContext.Provider value={{room: [rooms, setRooms], sorted: [sortedRooms, setSortedRooms], featured: [featuredRooms, setfeaturedRooms], loading: [loading, setLoading]}}>
+        <RoomContext.Provider value={{rooms: [rooms, setRooms], sorted: [sortedRooms, setSortedRooms], featured: [featuredRooms, setfeaturedRooms], loading: [loading, setLoading], getRoom}}>
 
             {props.children}
-
         </RoomContext.Provider> 
     ) 
 }
 
-const RoomConsumer = RoomContext.Consumer;
-
-export { RoomProvider, RoomConsumer, RoomContext};
+export { RoomProvider, RoomContext};
