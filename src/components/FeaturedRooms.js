@@ -1,15 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Title from './Title';
 import { RoomContext } from './context';
 import Loading from './Loading';
 import Room from './Room'
 
 function FeaturedRooms() {
-  
-  let { rooms, sorted, featured, loading } = useContext(RoomContext)
+  //NOTE: "Let" is important so that the value can be changed
+  let { featured, loading } = useContext(RoomContext)
 
-  const [roomValue, setRoomValue] = rooms;
-  const [sortedValue, setSortedValue] = sorted;
+  // assigning the object an array to access/map the values
   const [featuredValue, setFeaturedValue] = featured
   const [loadingValue, setLoadingValue] = loading;
 

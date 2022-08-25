@@ -9,6 +9,20 @@ const RoomProvider = (props) =>{
     const [sortedRooms, setSortedRooms] = useState([])
     const [featuredRooms, setfeaturedRooms] = useState([])
     const [loading, setLoading] = useState(true)
+    const [type, setType] = useState("all")
+    const [capacity, setCapacity] = useState(1)
+    const [price, setPrice] = useState(0)
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(0)
+    const [minSize, setMinSize] = useState(0)
+    const [maxSize, setMaxSize] = useState(0)
+    const [breakfast, setBreakfast] = useState(false)
+    const [pets, setPets] = useState(false)
+
+    let theMaxPrice = Math.max(...rooms.map(item => item.price));
+    
+    let theMaxSize = Math.max(...rooms.map(item => item.size));
+    //note: theMaxSize and theMaxPrice not same as their useState names 
 
     useEffect(() => {
         let roomsData = formatData(data);
@@ -17,6 +31,7 @@ const RoomProvider = (props) =>{
         setRooms(roomsData);
         setSortedRooms(roomsData)
         setfeaturedRooms(theFeaturedRooms)
+
         setLoading(false)
     }, [])
 
@@ -38,7 +53,7 @@ const RoomProvider = (props) =>{
     };
 
     return (
-        <RoomContext.Provider value={{rooms: [rooms, setRooms], sorted: [sortedRooms, setSortedRooms], featured: [featuredRooms, setfeaturedRooms], loading: [loading, setLoading], getRoom}}>
+        <RoomContext.Provider value={{rooms: [rooms, setRooms], sortedRooms: [sortedRooms, setSortedRooms], featured: [featuredRooms, setfeaturedRooms], loading: [loading, setLoading], getRoom}}>
 
             {props.children}
         </RoomContext.Provider> 

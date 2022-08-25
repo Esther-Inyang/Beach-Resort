@@ -711,7 +711,7 @@ const data = [
       price: 600,
       size: 1000,
       capacity: 10,
-      pets: true,
+      pets: false,
       breakfast: true,
       featured: true,
       description:
