@@ -18,21 +18,26 @@ const RoomProvider = (props) =>{
     const [maxSize, setMaxSize] = useState(0)
     const [breakfast, setBreakfast] = useState(false)
     const [pets, setPets] = useState(false)
+    const [typeName, setTypeName] = useState(["all"])
 
-    let theMaxPrice = Math.max(...rooms.map(item => item.price));
     
-    let theMaxSize = Math.max(...rooms.map(item => item.size));
-    //note: theMaxSize and theMaxPrice not same as their useState names 
-
     useEffect(() => {
         let roomsData = formatData(data);
         let theFeaturedRooms = roomsData.filter(room => room.featured === true);
+        console.log(roomsData)
 
         setRooms(roomsData);
         setSortedRooms(roomsData)
         setfeaturedRooms(theFeaturedRooms)
-
         setLoading(false)
+
+        let theMaxPrice = Math.max(...roomsData.map(item => item.price));
+        console.log(theMaxPrice)
+
+        let theMaxSize = Math.max(...roomsData.map(item => item.size));
+
+        setMaxPrice(theMaxPrice)
+        setMaxSize(theMaxSize)
     }, [])
 
     const formatData = (data) => {
@@ -52,8 +57,28 @@ const RoomProvider = (props) =>{
         return theRoom;
     };
 
+    const handleChange = event => {
+        const target = event.target
+        const name = event.target.name
+        const value = event.type === "checkbox" ? target.checked : target.value;
+
+        setTypeName([name + ":" + value])
+        filteredRooms()
+    }
+
+    const filteredRooms = () => {
+        let {rooms, type, capacity, price, minSize, breakfast, pets} = typeName;
+
+        let tempRooms = [...rooms];
+        if (type !== "all") {
+            tempRooms = tempRooms.filter(room => room.type === type);
+        }
+
+        setSortedRooms(tempRooms)
+    }
+
     return (
-        <RoomContext.Provider value={{rooms: [rooms, setRooms], sortedRooms: [sortedRooms, setSortedRooms], featured: [featuredRooms, setfeaturedRooms], loading: [loading, setLoading], getRoom}}>
+        <RoomContext.Provider value={{rooms: [rooms, setRooms], sortedRooms: [sortedRooms, setSortedRooms], featured: [featuredRooms, setfeaturedRooms], loading: [loading, setLoading], getRoom, handleChange}}>
 
             {props.children}
         </RoomContext.Provider> 

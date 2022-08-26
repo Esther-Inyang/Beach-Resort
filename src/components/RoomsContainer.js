@@ -11,6 +11,7 @@ export default function RoomsContainer() {
   
   const [loadingValue, setLoadingValue] = loading;
   const [sortedValue, setSortedValue] = sortedRooms
+  const [roomsData, setRooms] = rooms
 //   console.log(sortedValue)
 
   if(loadingValue){
@@ -19,7 +20,7 @@ export default function RoomsContainer() {
 
   return (
     <>
-        <RoomsFilter rooms={rooms} />
+        <RoomsFilter rooms={roomsData} />
         <RoomsList rooms = {sortedValue}/>
     </>
   )
