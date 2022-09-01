@@ -36,13 +36,7 @@ const RoomProvider = (props) =>{
 
         //Update the state with Max Price and Max Size
         setInputItems({...inputItems, maxPrice: theMaxPrice, maxSize: theMaxSize}) 
-
-        
     }, [])
-     
-    // console.log(inputItems)
-
-    ////////////////////////////////////////////////////////////////////////////
 
     //format Data
     const formatData = (data) => {
@@ -62,10 +56,9 @@ const RoomProvider = (props) =>{
         const theRoom = tempRooms.find((room) => room.slug === slug);
         return theRoom;
     };
-    ////////////////////////////////////////////////////////////////////////////
 
-
-   useEffect(()=>{
+    //Second UseEffect to handle filtered rooms
+    useEffect(()=>{
         let {type, capacity, price, minPrice, maxPrice, minSize, maxSize, breakfast, pets} = inputItems;  
 
         let tempRooms = [...rooms];
@@ -74,7 +67,7 @@ const RoomProvider = (props) =>{
         }
 
         setSortedRooms(tempRooms)
-   }, [inputItems, rooms])
+    }, [inputItems, rooms])
 
     const handleChange = event => {
         const target = event.target
@@ -83,21 +76,9 @@ const RoomProvider = (props) =>{
         const value = event.type === "checkbox" ? target.checked : target.value;
 
         setInputItems({...inputItems, [name]: value}) 
-    }
-
-    
-
-//[name] here replaces the 'type' and value here replaces the value = type: 'all' in the state 
+        //[name] here replaces the 'type' and value here replaces the value = type: 'all' in the state 
         //the new 'value' id determined by what is in the input value.
-
-    //filtered Rooms
-    // const filteredRooms = () => {
-    //     console.log("filtered rooms")
-
-        
-    // }
-
-    ///////////////////////////////////////////////////////////////////////////
+    }
 
     return (
         <RoomContext.Provider value={{rooms, sortedRooms, featuredRoomsValue, loading, getRoom, inputItems, handleChange}}>
