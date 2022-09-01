@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback} from 'react'
+import React, { useState, useEffect} from 'react'
 import data from '../data'
 
 const RoomContext = React.createContext();
@@ -43,7 +43,7 @@ const RoomProvider = (props) =>{
     // console.log(inputItems)
 
     ////////////////////////////////////////////////////////////////////////////
-    
+
     //format Data
     const formatData = (data) => {
         let tempItems = data.map(item =>{
@@ -63,23 +63,9 @@ const RoomProvider = (props) =>{
         return theRoom;
     };
     ////////////////////////////////////////////////////////////////////////////
-   
-    const handleChange = (useCallback((event) => {
-        // setInputItem
-        const target = event.target
 
-        const name = target.name
-        const value = event.type === "checkbox" ? target.checked : target.value;
 
-        setInputItems({...inputItems, [name]: value}) //[name] here replaces the 'type' and value here replaces the value = type: 'all' in the state 
-        //the new 'value' id determined by what is in the input value.
-        filteredRooms()
-    },[inputItems]))
-
-    //filtered Rooms
-    const filteredRooms = () => {
-        console.log("filtered rooms")
-
+   useEffect(()=>{
         let {type, capacity, price, minPrice, maxPrice, minSize, maxSize, breakfast, pets} = inputItems;  
 
         let tempRooms = [...rooms];
@@ -88,7 +74,28 @@ const RoomProvider = (props) =>{
         }
 
         setSortedRooms(tempRooms)
+   }, [inputItems, rooms])
+
+    const handleChange = event => {
+        const target = event.target
+
+        const name = target.name
+        const value = event.type === "checkbox" ? target.checked : target.value;
+
+        setInputItems({...inputItems, [name]: value}) 
     }
+
+    
+
+//[name] here replaces the 'type' and value here replaces the value = type: 'all' in the state 
+        //the new 'value' id determined by what is in the input value.
+
+    //filtered Rooms
+    // const filteredRooms = () => {
+    //     console.log("filtered rooms")
+
+        
+    // }
 
     ///////////////////////////////////////////////////////////////////////////
 
