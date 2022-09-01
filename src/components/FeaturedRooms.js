@@ -6,13 +6,9 @@ import Room from './Room'
 
 function FeaturedRooms() {
   //NOTE: "Let" is important so that the value can be changed
-  let { featured, loading } = useContext(RoomContext)
+  let {loading, featuredRoomsValue} = useContext(RoomContext)
 
-  // assigning the object an array to access/map the values
-  const [featuredValue, setFeaturedValue] = featured
-  const [loadingValue, setLoadingValue] = loading;
-
-  const featuredRoom = featuredValue.map(fRoom => {
+  const featuredRoom = featuredRoomsValue.map(fRoom => {
     return <Room key={fRoom.id} room={fRoom}/>
   })
 
@@ -21,7 +17,7 @@ function FeaturedRooms() {
         <Title title="Featured Rooms"/>
 
         <div className='featured-rooms-center'>
-          {loadingValue ? <Loading /> : featuredRoom}
+          {loading ? <Loading /> : featuredRoom}
         </div>
     </section>
   )

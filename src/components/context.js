@@ -1,45 +1,50 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback} from 'react'
 import data from '../data'
-// import Home from '../pages/Home';
 
 const RoomContext = React.createContext();
 
 const RoomProvider = (props) =>{
     const [rooms, setRooms] = useState([]);
     const [sortedRooms, setSortedRooms] = useState([])
-    const [featuredRooms, setfeaturedRooms] = useState([])
+    const [featuredRoomsValue, setfeaturedRoomsValue] = useState([])
     const [loading, setLoading] = useState(true)
-    const [type, setType] = useState("all")
-    const [capacity, setCapacity] = useState(1)
-    const [price, setPrice] = useState(0)
-    const [minPrice, setMinPrice] = useState(0)
-    const [maxPrice, setMaxPrice] = useState(0)
-    const [minSize, setMinSize] = useState(0)
-    const [maxSize, setMaxSize] = useState(0)
-    const [breakfast, setBreakfast] = useState(false)
-    const [pets, setPets] = useState(false)
-    const [typeName, setTypeName] = useState(["all"])
+    const [inputItems, setInputItems] = useState({
+        type:"all",
+        capacity: 1,
+        price: 0,
+        minPrice: 0,
+        maxPrice: 0,
+        minSize: 0,
+        maxSize: 0,
+        breakfast: false,
+        pets: false,
+    })
 
-    
     useEffect(() => {
         let roomsData = formatData(data);
         let theFeaturedRooms = roomsData.filter(room => room.featured === true);
-        console.log(roomsData)
 
         setRooms(roomsData);
         setSortedRooms(roomsData)
-        setfeaturedRooms(theFeaturedRooms)
-        setLoading(false)
-
+        setfeaturedRoomsValue(theFeaturedRooms)
+        setLoading(false)   
+        //Get max Price
         let theMaxPrice = Math.max(...roomsData.map(item => item.price));
-        console.log(theMaxPrice)
 
+        //Get Max Size
         let theMaxSize = Math.max(...roomsData.map(item => item.size));
 
-        setMaxPrice(theMaxPrice)
-        setMaxSize(theMaxSize)
-    }, [])
+        //Update the state with Max Price and Max Size
+        setInputItems({...inputItems, maxPrice: theMaxPrice, maxSize: theMaxSize}) 
 
+        
+    }, [])
+     
+    // console.log(inputItems)
+
+    ////////////////////////////////////////////////////////////////////////////
+    
+    //format Data
     const formatData = (data) => {
         let tempItems = data.map(item =>{
             let id = item.sys.id;
@@ -51,23 +56,31 @@ const RoomProvider = (props) =>{
         return tempItems;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
     const getRoom = (slug) =>{
         let tempRooms = [...rooms];
         const theRoom = tempRooms.find((room) => room.slug === slug);
         return theRoom;
     };
-
-    const handleChange = event => {
+    ////////////////////////////////////////////////////////////////////////////
+   
+    const handleChange = (useCallback((event) => {
+        // setInputItem
         const target = event.target
-        const name = event.target.name
+
+        const name = target.name
         const value = event.type === "checkbox" ? target.checked : target.value;
 
-        setTypeName([name + ":" + value])
+        setInputItems({...inputItems, [name]: value}) //[name] here replaces the 'type' and value here replaces the value = type: 'all' in the state 
+        //the new 'value' id determined by what is in the input value.
         filteredRooms()
-    }
+    },[inputItems]))
 
+    //filtered Rooms
     const filteredRooms = () => {
-        let {rooms, type, capacity, price, minSize, breakfast, pets} = typeName;
+        console.log("filtered rooms")
+
+        let {type, capacity, price, minPrice, maxPrice, minSize, maxSize, breakfast, pets} = inputItems;  
 
         let tempRooms = [...rooms];
         if (type !== "all") {
@@ -77,8 +90,10 @@ const RoomProvider = (props) =>{
         setSortedRooms(tempRooms)
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+
     return (
-        <RoomContext.Provider value={{rooms: [rooms, setRooms], sortedRooms: [sortedRooms, setSortedRooms], featured: [featuredRooms, setfeaturedRooms], loading: [loading, setLoading], getRoom, handleChange}}>
+        <RoomContext.Provider value={{rooms, sortedRooms, featuredRoomsValue, loading, getRoom, inputItems, handleChange}}>
 
             {props.children}
         </RoomContext.Provider> 
