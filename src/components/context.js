@@ -47,7 +47,6 @@ const RoomProvider = (props) =>{
     useEffect(()=>{
         //rooms
         let roomsData = formatData(data);
-
         //Get max Price
         let theMaxPrice = Math.max(...roomsData.map(item => item.price));
         //Get Max Size
@@ -73,7 +72,7 @@ const RoomProvider = (props) =>{
 
         //Filter Rooms by Type
         if (type !== "all") {
-            tempRooms = tempRooms.filter(room => room.type === type); //===type is from inputItems type. and 'type' here is dynamic according to the 'input value' selected.
+            tempRooms = tempRooms.filter(room => room.type === type);
         }
 
         //Converting the initial value types from "string" to number
@@ -107,22 +106,16 @@ const RoomProvider = (props) =>{
     const handleChange = event => {
         const target = event.target
         const name = target.name
-        // const type = name
-
-        //if event type is checkbox, check it. If not, show what is in the input value.
+        // type = name
         const value = target.type === "checkbox" ? target.checked : target.value;
-
-        //show everything that is in the inputItems state, but update what is in the "name of input (name.target)" which is the same as what is in the inputItems state to this new value (and the value is what is in the input itself).
                      
-            //(in input form) name = 'price' :  0 (price, in inputItems i.e value in input form) as the range changes it keeps updateing the price in inputItems to the new value]
+        //name === whatever name says, change 'that' in inputItems state.
         setInputItems({...inputItems, [name]: value}) 
-        //[name] here is the "name" = 'type' in the input, it replaces the 'type:' variable in useState and "value" here replaces the value of the usestate type: 'all' in the state 
         //the 'value' is determined dynamically by the "input value" selected.
     }
 
     return (
         <RoomContext.Provider value={{rooms, sortedRooms, featuredRoomsValue, loading, getRoom, inputItems, handleChange}}>
-
             {props.children}
         </RoomContext.Provider> 
     ) 

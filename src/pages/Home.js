@@ -19,9 +19,6 @@ function Home(){
 
             <Services />
             <FeaturedRooms />
-
-            {/* To focus at The Bottom as page renders */}
-            <Focus />
         </>
     )
 }
