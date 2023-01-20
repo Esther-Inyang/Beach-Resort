@@ -19,6 +19,7 @@ function FeaturedRooms() {
         <div className='featured-rooms-center'>
           {loading ? <Loading /> : featuredRoom}
         </div>
+        <p className='featured-text'>Click on the room to see more features!</p>
     </section>
   )
 }
